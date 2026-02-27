@@ -4,26 +4,11 @@ import {
   PDF_ORIENTATIONS,
   PDF_PAGE_SIZES,
   PDF_DESIGNS,
-} from "../enums/pdf.enum.js";
-import { InvoiceItem, InvoicePayload, User } from "../types/invoice.type.js";
+} from "../../enums/pdf.enum.js";
+import { InvoiceItem, InvoicePayload, User } from "../../types/invoice.type.js";
+import { drawPageNumbers } from "../../utils/pdfkit/drawPageNumber.js";
 
-// helper for page numbers
-function draw_page_numbers(doc: InstanceType<typeof PDFDocument>) {
-  const range = doc.bufferedPageRange();
-  for (let i = range.start; i < range.start + range.count; i++) {
-    doc.switchToPage(i);
-    doc
-      .fontSize(10)
-      .fillColor("#555")
-      .text(
-        `Page ${i + 1} of ${range.count}`,
-        doc.page.width - doc.page.width / 2,
-        doc.page.height - 84,
-      );
-  }
-}
-
-export const generate_pdf_service = async (args: {
+export const generatePdfService = async (args: {
   design: (typeof PDF_DESIGNS)[keyof typeof PDF_DESIGNS];
   invoice?: InvoicePayload;
   imageUrl?: string;
@@ -35,6 +20,7 @@ export const generate_pdf_service = async (args: {
 }): Promise<Buffer> => {
   return new Promise(async (resolve, reject) => {
     try {
+      // create PDF document with specified size and orientation
       const doc = new PDFDocument({
         size: args.size,
         layout: args.orientation,
@@ -54,7 +40,7 @@ export const generate_pdf_service = async (args: {
 
       // draw page numbers after design is fully rendered
       if (args.pageNumber) {
-        draw_page_numbers(doc);
+        drawPageNumbers(doc);
       }
 
       doc.end();

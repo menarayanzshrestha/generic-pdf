@@ -1,5 +1,5 @@
 import PDFDocument from "pdfkit";
-import { A3_WIDTH, A6_WIDTH } from "../../constants/pdf.js";
+import { A3_WIDTH, A6_WIDTH } from "../../../constants/pdf.js";
 
 export const userListDesign = (
   doc: InstanceType<typeof PDFDocument>,

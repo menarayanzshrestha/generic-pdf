@@ -1,9 +1,10 @@
 # PDF Generator API
 
-A TypeScript/Express-based API for generating dynamic PDF documents (invoices, user lists, etc.) using PDFKit.
+A TypeScript/Express-based API for generating dynamic PDF documents (invoices, user lists, etc.) using **PDFKit** or **Puppeteer**.
 
 ## Features
 
+- **Multiple PDF Engines**: PDFKit for lightweight generation, Puppeteer for advanced rendering
 - **Multiple Design Templates**: Invoice and user-list designs
 - **Customizable Parameters**: Page size, orientation, margins, page numbering
 - **Dynamic Content**: Generate mock data or provide custom items/users
@@ -45,10 +46,9 @@ yarn start
 
 ## API Endpoints
 
-### Generate PDF
+### 1. Generate PDF 
 **POST** `/api/pdf/pdfkit`
-
-Generates a PDF document and returns it as a downloadable file.
+**POST** `/api/pdf/pupeteer`
 
 #### Query Parameters
 
@@ -216,24 +216,39 @@ curl --location 'http://localhost:6000/api/pdf/pdfkit?size=A4&orientation=portra
 
 ```
 src/
-├── server.ts                 # Express server entry point
-├── app.ts                    # Express app setup
+├── server.ts                           # Express server entry point
+├── app.ts                              # Express app setup
 ├── controllers/
-│   └── pdf.controller.ts     # Request handler
+│   ├── pdfKit/
+│   │   └── pdf.controller.ts          # PDFKit request handler
+│   └── pupeteer/
+│       └── pupeteer.controller.ts     # Puppeteer request handler
 ├── services/
-│   ├── pdf.service.ts        # PDF generation logic
-│   └── designs/
-│       ├── invoice.ts        # Invoice design template
-│       ├── user-list.ts      # User list design template
-│       └── index.ts          # Design map
+│   ├── pdfKit/                         # PDFKit-specific logic
+│   │   ├── pdf.service.ts             # PDFKit PDF generation
+│   │   └── designs/
+│   │       ├── invoice.ts             # Invoice template for PDFKit
+│   │       ├── user-list.ts           # User list template for PDFKit
+│   │       └── index.ts               # PDFKit design map
+│   └── pupeteer/                       # Puppeteer-specific logic
+│       ├── pupeteer.service.ts        # Puppeteer PDF generation
+│       └── designs/
+│           ├── invoice.ts             # Invoice HTML template for Puppeteer
+│           ├── user-list.ts           # User list HTML template for Puppeteer
+│           ├── pageNumber.ts          # Page number footer template
+│           └── index.ts               # Design map
 ├── validators/
-│   └── pdf.validator.ts      # Zod schemas for validation
+│   └── pdf.validator.ts               # Zod schemas for validation
 ├── types/
-│   └── invoice.type.ts       # TypeScript interfaces
+│   └── invoice.type.ts                # TypeScript interfaces
 ├── enums/
-│   └── pdf.enum.ts           # Enum definitions
+│   └── pdf.enum.ts                    # Enum definitions
 ├── routes/
-│   └── pdf.route.ts          # API routes
+│   └── pdf.route.ts                   # API routes
 └── utils/
-    └── loadImage.ts          # Image loading utilities
-```
+  ├── pdfkit/                        # PDFKit utilities
+  │   ├── loadImage.ts               # Image loading utilities for PDFKit
+  │   └── drawPageNumber.ts          # Page numbering helper for PDFKit
+  └── pupeteer/
+    └── getBrowser.ts              # Puppeteer browser instance management
+``` 

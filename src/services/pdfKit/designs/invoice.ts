@@ -1,7 +1,7 @@
 import PDFDocument from "pdfkit";
-import { loadImage } from "../../utils/loadImage.js";
-import { A3_WIDTH, FONT, FONT_BOLD } from "../../constants/pdf.js";
-import { InvoiceItem } from "../../types/invoice.type.js";
+import { loadImage } from "../../../utils/pdfkit/loadImage.js";
+import { A3_WIDTH, FONT, FONT_BOLD } from "../../../constants/pdf.js";
+import { InvoiceItem } from "../../../types/invoice.type.js";
 
 export const invoiceDesign = async (
   doc: InstanceType<typeof PDFDocument>,

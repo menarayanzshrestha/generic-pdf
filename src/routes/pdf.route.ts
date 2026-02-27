@@ -1,9 +1,13 @@
 import { Router } from "express";
-import { print_pdf_controller } from "../controllers/pdf.controller.js";
+import { printPdfController } from "../controllers/pdfKit/pdf.controller.js";
+import { pupeteerPdfController } from "../controllers/pupeteer/pupeteer.controller.js";
 
 const router = Router();
 
 // generate and download pdf-kit
-router.post("/pdfkit", print_pdf_controller);
+router.post("/pdfkit", printPdfController);
+
+// generate and download pupetteer
+router.post("/pupeteer", pupeteerPdfController);
 
 export default router;

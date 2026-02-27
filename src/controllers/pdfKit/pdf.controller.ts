@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { bodySchema, querySchema } from "../validators/pdf.validator.js";
-import { generate_pdf_service } from "../services/pdf.service.js";
-import { InvoiceItem, User } from "../types/invoice.type.js";
-export const print_pdf_controller = async (req: Request, res: Response) => {
+import { bodySchema, querySchema } from "../../validators/pdf.validator.js";
+import { generatePdfService } from "../../services/pdfKit/pdf.service.js";
+import { InvoiceItem, User } from "../../types/invoice.type.js";
+export const printPdfController = async (req: Request, res: Response) => {
   try {
     // Validate query
     const queryResult = querySchema.safeParse(req.query);
@@ -47,7 +47,7 @@ export const print_pdf_controller = async (req: Request, res: Response) => {
     }
 
     //generate PDF buffer from service
-    const pdf_buffer = await generate_pdf_service({
+    const pdf_buffer = await generatePdfService({
       invoice: body.invoice,
       items: items,
       users: users,
